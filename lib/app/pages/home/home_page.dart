@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:lol_app/app/repositories/summoner_info_repository.dart';
 import '../../repositories/summonerID_repository.dart';
 
 TextEditingController summonerNameCtrl = TextEditingController();
-SummonerIDRepository summonerRepository = SummonerIDRepository();
-Future<String> id;
+SummonerIDRepository _summonerIDRepository = SummonerIDRepository();
+SummonerInfoRepository _summonerInfoRepository = SummonerInfoRepository();
+String id;
+var resultInfo;
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,6 +14,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,9 +38,9 @@ class _HomePageState extends State<HomePage> {
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
-                ),
-              color: Colors.blue,
               ),
+              color: Colors.blue,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(12.0),
@@ -47,9 +55,12 @@ class _HomePageState extends State<HomePage> {
           ),
           RaisedButton(
             child: Text("Procurar"),
-            onPressed: () {
-              summonerRepository.getSummonerID(summonerNameCtrl.text);
+            onPressed: () async {
+              var resultID = await _summonerIDRepository.getSummonerID(summonerNameCtrl.text);
+              id = resultID["id"];
               print(id);
+              resultInfo = await _summonerInfoRepository.getSummonerInfo(id);
+              Navigator.pushReplacementNamed(context, '/summoner');
             },
           )
         ],
