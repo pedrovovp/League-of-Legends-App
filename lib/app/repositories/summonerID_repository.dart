@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:http/http.dart';
 
-String apiKey = "RGAPI-d0b0ec7c-a7e5-4966-bf63-208aa5177d6e";
+String apiKey = "RGAPI-6ce639a0-beac-46ed-8ca8-d17b0d895e82";
 
 class SummonerIDRepository extends Disposable {
 

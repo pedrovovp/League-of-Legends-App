@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lol_app/app/repositories/summoner_info_repository.dart';
 import '../../repositories/summonerID_repository.dart';
 
+
 TextEditingController summonerNameCtrl = TextEditingController();
 SummonerIDRepository _summonerIDRepository = SummonerIDRepository();
 SummonerInfoRepository _summonerInfoRepository = SummonerInfoRepository();
@@ -21,50 +22,65 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Know Your Legend"),
+    return Stack(children: <Widget>[
+      Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          image: AssetImage('lib/assets/images/bg.png'),
+          fit: BoxFit.cover,
+        )),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Title(
-              child: Text(
-                "Digite o nome de invocador :",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+      Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: Text("Know Your Legend"),
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Title(
+                child: Text(
+                  "Digite o nome de invocador :",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                color: Colors.blue,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: TextField(
+                keyboardType: TextInputType.text,
+                controller: summonerNameCtrl,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white54,
+                  hintText: "Nome de Invocador",
+                  border: OutlineInputBorder(),
                 ),
               ),
-              color: Colors.blue,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: TextField(
-              keyboardType: TextInputType.text,
-              controller: summonerNameCtrl,
-              decoration: InputDecoration(
-                hintText: "Nome de Invocador",
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ),
-          RaisedButton(
-            child: Text("Procurar"),
-            onPressed: () async {
-              var resultID = await _summonerIDRepository.getSummonerID(summonerNameCtrl.text);
-              id = resultID["id"];
-              print(id);
-              resultInfo = await _summonerInfoRepository.getSummonerInfo(id);
-              Navigator.pushReplacementNamed(context, '/summoner');
-            },
-          )
-        ],
+            RaisedButton(
+              child: Text("Procurar"),
+              color: Colors.white54,
+              onPressed: () async {
+                var resultID = await _summonerIDRepository
+                    .getSummonerID(summonerNameCtrl.text);
+                id = resultID["id"];
+                resultInfo = await _summonerInfoRepository.getSummonerInfo(id);
+                Navigator.pushReplacementNamed(context, '/summoner');
+              },
+            )
+          ],
+        ),
       ),
-    );
+    ]);
   }
 }
