@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:lol_app/app/repositories/summoner_info_repository.dart';
 import '../../repositories/summonerID_repository.dart';
 
-
 TextEditingController summonerNameCtrl = TextEditingController();
 SummonerIDRepository _summonerIDRepository = SummonerIDRepository();
 SummonerInfoRepository _summonerInfoRepository = SummonerInfoRepository();
 String id;
-var resultInfo;
+var resultInfo, resultID;
 
 class HomePage extends StatefulWidget {
   @override
@@ -26,7 +25,7 @@ class _HomePageState extends State<HomePage> {
       Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-          image: AssetImage('lib/assets/images/bg.png'),
+          image: AssetImage('lib/assets/images/bg-2.png'),
           fit: BoxFit.cover,
         )),
       ),
@@ -34,7 +33,12 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: Text("Know Your Legend"),
+          title: Text(
+            "Know Your Legend",
+            style: TextStyle(
+              fontFamily: 'RobotoSlab',
+            ),
+          ),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -49,6 +53,7 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'RobotoSlab',
                   ),
                 ),
                 color: Colors.blue,
@@ -68,14 +73,16 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             RaisedButton(
-              child: Text("Procurar"),
+              child: Text("Procurar",style: TextStyle(
+                  fontFamily: 'RobotoSlab',
+              ),),
               color: Colors.white54,
               onPressed: () async {
-                var resultID = await _summonerIDRepository
+                resultID = await _summonerIDRepository
                     .getSummonerID(summonerNameCtrl.text);
                 id = resultID["id"];
                 resultInfo = await _summonerInfoRepository.getSummonerInfo(id);
-                Navigator.pushReplacementNamed(context, '/summoner');
+                Navigator.pushNamed(context, '/summoner');
               },
             )
           ],

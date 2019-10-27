@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lol_app/app/repositories/summonerID_repository.dart';
 import 'package:mockito/mockito.dart';
 import 'package:dio/dio.dart';
 import 'package:lol_app/app/repositories/summoner_info_repository.dart';
