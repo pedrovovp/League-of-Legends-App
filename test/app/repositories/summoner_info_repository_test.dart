@@ -24,7 +24,7 @@ void main() {
       when(client.get('https://jsonplaceholder.typicode.com/posts/1'))
           .thenAnswer(
               (_) async => Response(data: {'title': 'Test'}, statusCode: 200));
-      Map<String, dynamic> data = await repository.fetchPost(client);
+      Map<String, dynamic> data = await repository.SummonerInfoRepository(client);
       expect(data['title'], 'Test');
     });
   });

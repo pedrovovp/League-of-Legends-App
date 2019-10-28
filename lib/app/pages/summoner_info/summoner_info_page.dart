@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:lol_app/app/pages/match/match_page.dart';
+import 'package:lol_app/app/repositories/matches_repository.dart';
 import 'package:lol_app/app/repositories/summoner_info_repository.dart';
 import 'package:lol_app/app/pages/home/home_page.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:lol_app/app/pages/summoner_info/summoner_info_bloc.dart';
 
 SummonerInfoRepository _summonerInfoRepository = SummonerInfoRepository();
 Map<dynamic, dynamic> infoSolo;
 Map<dynamic, dynamic> infoTFT;
 Map<dynamic, dynamic> infoFlex;
+final summonerBloc = SummonerInfoBloc();
 
 final pageController = PageController(initialPage: 1);
 
@@ -62,6 +66,7 @@ class _SummonerInfoPageState extends State<SummonerInfoPage> {
                   infoSolo.clear();
                   infoTFT.clear();
                   Navigator.pop(context);
+                  summonerBloc.summonerInput.add(0);
                 },
               ),
               IconButton(
@@ -69,61 +74,80 @@ class _SummonerInfoPageState extends State<SummonerInfoPage> {
                   Icons.photo,
                   color: Colors.white,
                 ),
-                onPressed: () => Profile(),
+                onPressed: () => summonerBloc.summonerInput.add(0),
               ),
               IconButton(
                 icon: Icon(
                   Icons.games,
                   color: Colors.white,
                 ),
-                onPressed: null,
+                onPressed: () {
+                  MatchesRepository().getMatches(resultID["accountId"]);
+                  summonerBloc.summonerInput.add(1);
+                },
               )
             ],
           ),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Text(
-                  resultID['name'],
-                  style: TextStyle(
-                    fontFamily: 'RobotoSlab',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 50,
-                    color: Colors.white,
+        body: StreamBuilder<int>(
+            initialData: 0,
+            stream: summonerBloc.summonerOutput,
+            builder: (context, snapshot) {
+              if (snapshot.data == 0) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          resultID['name'],
+                          style: TextStyle(
+                            fontFamily: 'RobotoSlab',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 50,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      BuildCarousel(),
+                    ],
                   ),
-                ),
-              ),
-              CarouselSlider(
-                height: 400.0,
-                items: [Profile(), Solo(), TFT(), Flex()].map((i) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.symmetric(horizontal: 5.0),
-                        child: i,
-                      );
-                    },
-                  );
-                }).toList(),
-              ),
-            ],
-          ),
-        ),
+                );
+              } else if (snapshot.data == 1) {
+                return MatchPage();
+              }
+            }),
       ),
     ]);
+  }
+}
+
+class BuildCarousel extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CarouselSlider(
+      height: 400.0,
+      items: [Profile(), Solo(), TFT(), Flex()].map((i) {
+        return Builder(
+          builder: (BuildContext context) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              margin: EdgeInsets.symmetric(horizontal: 5.0),
+              child: i,
+            );
+          },
+        );
+      }).toList(),
+    );
   }
 }
 
 class Solo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (infoSolo.isEmpty) {
+    if (infoSolo == null || infoSolo.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -210,7 +234,7 @@ class Solo extends StatelessWidget {
 class TFT extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (infoTFT.isEmpty) {
+    if (infoTFT == null || infoTFT.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -297,7 +321,7 @@ class TFT extends StatelessWidget {
 class Flex extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (infoFlex.isEmpty) {
+    if (infoFlex == null || infoFlex.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[

@@ -1,7 +1,12 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:rxdart/rxdart.dart';
 
 class SummonerInfoBloc extends BlocBase {
-  //dispose will be called automatically by closing its streams
+
+  final _summonerInfoController = BehaviorSubject<int>();
+  Sink<int> get summonerInput => _summonerInfoController.sink;
+  Stream<int> get summonerOutput => _summonerInfoController.stream;
+
   @override
   void dispose() {
     super.dispose();
