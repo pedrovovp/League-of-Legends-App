@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lol_app/app/pages/match/match_builder_reduced.dart';
 
 class MatchPage extends StatefulWidget {
   @override
@@ -6,6 +7,11 @@ class MatchPage extends StatefulWidget {
 }
 
 class _MatchPageState extends State<MatchPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,6 +32,14 @@ class _MatchPageState extends State<MatchPage> {
                 ),
               ),
             ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: 99,
+                itemBuilder: (BuildContext context, int index){
+                  return Item().getMatch(index);
+                },
+              ),
+            )
           ],
         ),
       ),
@@ -33,11 +47,3 @@ class _MatchPageState extends State<MatchPage> {
   }
 }
 
-class Item extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: ListTile(),
-    );
-  }
-}

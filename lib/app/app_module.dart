@@ -1,3 +1,4 @@
+import 'package:lol_app/app/repositories/champion_name_repository.dart';
 import 'package:lol_app/app/pages/match/match_bloc.dart';
 import 'package:lol_app/app/repositories/matches_repository.dart';
 import 'package:lol_app/app/repositories/summoner_info_repository.dart';
@@ -18,6 +19,7 @@ class AppModule extends ModuleWidget {
 
   @override
   List<Dependency> get dependencies => [
+        Dependency((i) => ChampionNameRepository()),
         Dependency((i) => MatchesRepository()),
         Dependency((i) => SummonerInfoRepository()),
         Dependency((i) => SummonerIDRepository()),

@@ -11,8 +11,8 @@ Map<dynamic, dynamic> infoSolo;
 Map<dynamic, dynamic> infoTFT;
 Map<dynamic, dynamic> infoFlex;
 final summonerBloc = SummonerInfoBloc();
-
 final pageController = PageController(initialPage: 1);
+var resultMatches;
 
 class SummonerInfoPage extends StatefulWidget {
   @override
@@ -81,8 +81,8 @@ class _SummonerInfoPageState extends State<SummonerInfoPage> {
                   Icons.games,
                   color: Colors.white,
                 ),
-                onPressed: () {
-                  MatchesRepository().getMatches(resultID["accountId"]);
+                onPressed: () async {
+                  resultMatches = await MatchesRepository().getMatches(resultID["accountId"]); //problem
                   summonerBloc.summonerInput.add(1);
                 },
               )

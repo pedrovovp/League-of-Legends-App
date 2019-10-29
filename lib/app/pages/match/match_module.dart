@@ -1,5 +1,6 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:lol_app/app/pages/match/match_page.dart';
 
 class MatchModule extends ModuleWidget {
   @override
@@ -9,7 +10,7 @@ class MatchModule extends ModuleWidget {
   List<Dependency> get dependencies => [];
 
   @override
-  Widget get view => Container();
+  Widget get view => MatchPage();
 
   static Inject get to => Inject<MatchModule>.of();
 }
