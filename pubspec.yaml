@@ -20,7 +20,7 @@ dependencies:
   carousel_slider:
   mockito:
   http:
-  dio: ^3.0.3
+  dio: ">=3.0.3 <6.0.0"
   rxdart: ^0.22.4
   bloc_pattern: ^2.4.1+1
   flutter:
